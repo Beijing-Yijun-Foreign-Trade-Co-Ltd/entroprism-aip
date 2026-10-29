@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FREE-20261101-D001 · Adversary Implementation Diagram</title>
+<style>
+:root{--bg:#070d12;--panel:#0e1a22;--line:#1d303b;--acc:#37e0c0;--acc2:#4aa8ff;--txt:#dbe7ee;--mut:#8aa0ad}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(1200px 600px at 70% -10%,#0d222b,var(--bg));color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft JhengHei","Microsoft YaHei","Noto Sans TC","Noto Sans HK",system-ui,sans-serif;line-height:1.6;overflow-wrap:break-word;word-break:break-word}
+.wrap{max-width:980px;margin:0 auto;padding:32px 20px 60px}
+header{margin-bottom:20px}.crumb{color:var(--mut);font-size:13px;letter-spacing:.5px}
+h1{font-size:30px;margin:6px 0}.wm{display:inline-block;margin-top:6px;color:var(--acc);border:1px solid var(--acc);border-radius:6px;padding:2px 10px;font-size:13px}
+h3{color:var(--acc2);font-size:15px;margin:0 0 10px;letter-spacing:.4px}
+.box{background:linear-gradient(180deg,var(--panel),#0b151c);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.grid2 .box{margin:0}
+.hash{display:block;word-break:break-all;color:var(--acc);font-size:13px;background:#0a141a;border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+.tech td,.tech th{border:1px solid var(--line);padding:7px 10px;text-align:left;word-break:break-word}.tech .code{color:var(--acc);font-weight:600}.tech .sub{color:var(--mut)}
+.stage{margin:10px 0;border-left:3px solid var(--acc);padding-left:12px}
+.stage-h{font-weight:600}.prim{color:var(--mut);font-family:ui-monospace,Consolas,monospace;font-size:12px;margin-left:8px;word-break:break-all}
+.args{font-size:13px}.args td{border-bottom:1px dashed var(--line);padding:4px 8px;vertical-align:top;word-break:break-word}.args .k{color:var(--acc2);width:160px}
+ul.cve,ul.sc{margin:0;padding-left:20px}.ev{color:var(--mut);font-size:13px}
+.cve-meta{color:var(--mut);font-size:12px;margin-left:8px}
+pre.rule{background:#0a141a;border:1px solid var(--line);border-radius:8px;padding:10px;overflow-x:auto;font-size:12px;color:#cfe;white-space:pre-wrap;word-break:break-all;font-family:ui-monospace,Consolas,monospace;line-height:1.5}
+.det{margin:8px 0}.verdict{display:inline-block;font-size:11px;font-weight:700;border-radius:4px;padding:1px 8px;margin-bottom:4px;letter-spacing:.4px}
+.verdict.ok{background:#0d2b22;color:#37e0c0;border:1px solid #1d5c4a}.verdict.heu{background:#2b220d;color:#e0b537;border:1px solid #5c4a1d}
+.stats{display:flex;gap:16px;margin:14px 0}.stats div{flex:1;text-align:center;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px}
+.flowchain{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:4px 0 6px}
+.flow-node{background:#0e1a22;border:1px solid #1d5c4a;border-radius:10px;padding:10px 8px;text-align:center;display:flex;flex-direction:column;gap:5px}
+.flow-title{color:var(--acc);font-weight:700;font-size:13px;line-height:1.4}
+.flow-prim{color:var(--txt);font-family:ui-monospace,Consolas,monospace;font-size:11px;word-break:break-all;line-height:1.4}
+.flow-events{color:var(--mut);font-size:10.5px;line-height:1.5;display:flex;flex-direction:column;gap:2px}
+.flow-events span{display:block;word-break:break-word}
+.flowcap{color:var(--mut);font-size:11px;margin:0 0 14px}
+@media(max-width:900px){.flowchain{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:560px){.flowchain{grid-template-columns:repeat(2,1fr)}}
+.stats b{display:block;font-size:28px;color:var(--acc)}.stats span{color:var(--mut);font-size:13px}
+.matrix{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+.cell{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px}.cell .code{color:var(--acc);font-weight:700;font-size:13px}.cell .name{font-size:13px;margin:2px 0;word-break:break-word}.cell .paths{color:var(--mut);font-size:12px}
+footer{margin-top:22px;color:var(--mut);font-size:13px}
+@media(max-width:640px){.grid2{grid-template-columns:1fr}}
+</style></head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="crumb">FREE-20261101 · Adversary Implementation Diagram</div>
+    <h1>FREE-20261101-D001</h1>
+    
+  </header>
+  <section class="grid2">
+    <div class="box"><h3>Trace Hash</h3><code class="hash">1c78708e501c50a2b48a5ba5570280acb1be36865570d60a71982c6823779276</code></div>
+    <div class="box"><h3>Freshness Grade</h3><p>Unknown (no CVE anchor)</p></div>
+  </section>
+  <section class="box">
+    <h3>Techniques</h3>
+    <table class="tech"><tr><th>ID</th><th>Technique</th><th>Sub-technique</th></tr><tr><td class="code">T1110</td><td>Brute Force</td>
+      <td class="sub">T1110.001</td></tr><tr><td class="code">T1547</td><td>Boot or Logon Autostart Execution</td>
+      <td class="sub">T1547.001</td></tr><tr><td class="code">T1053</td><td>Scheduled Task/Job</td>
+      <td class="sub">T1053.005</td></tr><tr><td class="code">T1562</td><td>Impair Defenses</td>
+      <td class="sub">T1562.001</td></tr><tr><td class="code">T1102</td><td>Web Service</td>
+      <td class="sub">T1102.001</td></tr></table>
+  </section>
+  <section class="box">
+    <h3>Related CVE</h3><ul class="cve"><li>—</li></ul>
+  </section>
+  <section class="box">
+    <h3>Behavior Chain (6 Stages)</h3><div class="flowchain">
+      <div class="flow-node">
+        <div class="flow-title">① Initial Recon</div>
+        <div class="flow-prim">env.enumerate</div>
+        <div class="flow-events"><span>EventID 1（进程创建）</span><span>3（网络连接）</span></div>
+      </div>
+      <div class="flow-node">
+        <div class="flow-title">② Obfuscation &amp; Packing</div>
+        <div class="flow-prim">obfuscate.packed</div>
+        <div class="flow-events"><span>EventID 7（镜像加载）</span><span>11（文件创建）</span></div>
+      </div>
+      <div class="flow-node">
+        <div class="flow-title">③ Replication</div>
+        <div class="flow-prim">replicate.copy</div>
+        <div class="flow-events"><span>EventID 11（文件创建）</span><span>26（文件删除）</span></div>
+      </div>
+      <div class="flow-node">
+        <div class="flow-title">④ Payload Transform</div>
+        <div class="flow-prim">payload.transform</div>
+        <div class="flow-events"><span>EventID 1（进程创建）</span><span>10（进程访问）</span></div>
+      </div>
+      <div class="flow-node">
+        <div class="flow-title">⑤ Persistence</div>
+        <div class="flow-prim">persist.schedule</div>
+        <div class="flow-events"><span>EventID 4698（计划任务）</span><span>7045（服务创建）</span><span>13（注册表）</span></div>
+      </div>
+      <div class="flow-node">
+        <div class="flow-title">⑥ Command &amp; Control</div>
+        <div class="flow-prim">c2.beacon</div>
+        <div class="flow-events"><span>EventID 3（网络连接）</span><span>22（DNS 查询）</span></div>
+      </div></div><div class="flowcap">Observable event IDs (Sysmon/Windows) shown under each stage</div>
+    <div class="stage">
+      <div class="stage-h">① Initial Recon
+        <span class="prim">env.enumerate</span></div>
+      <table class="args"><tr><td class="k">target</td><td class="v">rdp_3389</td></tr><tr><td class="k">scope</td><td class="v">network</td></tr><tr><td class="k">detail</td><td class="v">password guessing rdp</td></tr></table>
+    </div>
+    <div class="stage">
+      <div class="stage-h">② Obfuscation &amp; Packing
+        <span class="prim">obfuscate.packed</span></div>
+      <table class="args"><tr><td class="k">format</td><td class="v">amsi_bypass</td></tr><tr><td class="k">layers</td><td class="v">1</td></tr><tr><td class="k">target</td><td class="v">amsi.dll</td></tr><tr><td class="k">masquerade</td><td class="v">none</td></tr></table>
+    </div>
+    <div class="stage">
+      <div class="stage-h">③ Replication
+        <span class="prim">replicate.copy</span></div>
+      <table class="args"><tr><td class="k">dest</td><td class="v">local_share</td></tr><tr><td class="k">spread</td><td class="v">lateral</td></tr><tr><td class="k">count</td><td class="v">3</td></tr></table>
+    </div>
+    <div class="stage">
+      <div class="stage-h">④ Payload Transform
+        <span class="prim">payload.transform</span></div>
+      <table class="args"><tr><td class="k">technique</td><td class="v">amsi_bypass</td></tr><tr><td class="k">type</td><td class="v">amsi.dll</td></tr><tr><td class="k">memory_only</td><td class="v">false</td></tr><tr><td class="k">service</td><td class="v"></td></tr><tr><td class="k">cve</td><td class="v"></td></tr></table>
+    </div>
+    <div class="stage">
+      <div class="stage-h">⑤ Persistence
+        <span class="prim">persist.schedule</span></div>
+      <table class="args"><tr><td class="k">mechanism</td><td class="v">registry_run</td></tr><tr><td class="k">trigger</td><td class="v"></td></tr><tr><td class="k">hidden</td><td class="v">false</td></tr><tr><td class="k">task_name</td><td class="v">SystemTask</td></tr></table>
+    </div>
+    <div class="stage">
+      <div class="stage-h">⑥ Command &amp; Control
+        <span class="prim">c2.beacon</span></div>
+      <table class="args"><tr><td class="k">protocol</td><td class="v">https</td></tr><tr><td class="k">endpoints</td><td class="v">c2.github_c2.example</td></tr><tr><td class="k">domain_fronting</td><td class="v">false</td></tr><tr><td class="k">mode</td><td class="v">standard</td></tr></table>
+    </div>
+  </section>
+  <section class="box">
+    <h3>Reproducible Validation Scenarios</h3><ul class="sc"><li>baseline_execution <span class="ev">6 events</span></li><li>reboot_persistence <span class="ev">4 events</span></li><li>c2_reconnect <span class="ev">3 events</span></li></ul>
+  </section>
+  <section class="box">
+    <h3>Actionable Detections</h3><div class="det"><span class="verdict ok">ACTIONABLE</span>
+      <pre class="rule">title: RDP Brute Force
+description: Detects RDP Brute Force behavior
+status: experimental
+logsource:
+  product: windows
+  category: authentication
+detection:
+  selection: {EventID: 4625}
+  condition: selection | count() &gt; 20</pre></div><div class="det"><span class="verdict heu">HEURISTIC</span>
+      <pre class="rule">title: HKLM Run Key
+description: Detects HKLM Run Key behavior
+status: experimental
+logsource:
+  product: windows
+  category: registry_event
+detection:
+  registry: {key|contains: CurrentVersion\Run}
+  condition: registry</pre></div><div class="det"><span class="verdict heu">HEURISTIC</span>
+      <pre class="rule">title: Dormant Idle Wait
+description: Detects Dormant Idle Wait behavior
+status: experimental
+logsource:
+  product: windows
+  category: process_creation
+detection:
+  selection: {EventID: 4698, Trigger: idle}
+  condition: selection</pre></div><div class="det"><span class="verdict heu">HEURISTIC</span>
+      <pre class="rule">title: AMSI Bypass
+description: Detects AMSI Bypass behavior
+status: experimental
+logsource:
+  product: windows
+  category: process_creation
+detection:
+  selection: {ScriptBlockText|contains: AmsiScanBuffer}
+  condition: selection</pre></div><div class="det"><span class="verdict heu">HEURISTIC</span>
+      <pre class="rule">title: GitHub C2
+description: Detects GitHub C2 behavior
+status: experimental
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection: {Url|contains: raw.githubusercontent}
+  condition: selection</pre></div>
+  </section>
+  <footer><p>This validation set is for defensive detection, security testing, and compliance validation only.</p>
+    </footer>
+</div>
+
+</body></html>
