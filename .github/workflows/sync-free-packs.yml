@@ -1,0 +1,37 @@
+name: Sync Free AIP Packs
+
+on:
+  schedule:
+    # 每天 05:00 UTC（= 13:00 UTC+8，免费库满 7 天自动释放新包之后）
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Sync free packs from entroprism.net
+        run: python scripts/sync_free_packs.py
+
+      - name: Commit and push
+        run: |
+          git config user.name "Entroprism"
+          git config user.email "entroprism@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No new packs to sync"
+          else
+            git commit -m "sync: update free AIP packs ($(date -u +%Y-%m-%d))"
+            git push
+          fi
