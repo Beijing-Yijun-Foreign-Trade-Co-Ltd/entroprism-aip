@@ -1,7 +1,7 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8">
+<html lang="zh-TW"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>FREE-20261101-D001 · Adversary Implementation Diagram</title>
+<title>AIP-20261103-D003 · 對抗行為架構圖</title>
 <style>
 :root{--bg:#070d12;--panel:#0e1a22;--line:#1d303b;--acc:#37e0c0;--acc2:#4aa8ff;--txt:#dbe7ee;--mut:#8aa0ad}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(1200px 600px at 70% -10%,#0d222b,var(--bg));color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft JhengHei","Microsoft YaHei","Noto Sans TC","Noto Sans HK",system-ui,sans-serif;line-height:1.6;overflow-wrap:break-word;word-break:break-word}
@@ -24,6 +24,10 @@ pre.rule{background:#0a141a;border:1px solid var(--line);border-radius:8px;paddi
 .verdict.ok{background:#0d2b22;color:#37e0c0;border:1px solid #1d5c4a}.verdict.heu{background:#2b220d;color:#e0b537;border:1px solid #5c4a1d}
 .stats{display:flex;gap:16px;margin:14px 0}.stats div{flex:1;text-align:center;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px}
 .flowchain{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:4px 0 6px}
+.flowchain.cols-5{grid-template-columns:repeat(5,1fr)}
+.flowchain.cols-4{grid-template-columns:repeat(4,1fr)}
+.flowchain.cols-7{grid-template-columns:repeat(7,1fr)}
+.flowchain.cols-8{grid-template-columns:repeat(8,1fr)}
 .flow-node{background:#0e1a22;border:1px solid #1d5c4a;border-radius:10px;padding:10px 8px;text-align:center;display:flex;flex-direction:column;gap:5px}
 .flow-title{color:var(--acc);font-weight:700;font-size:13px;line-height:1.4}
 .flow-prim{color:var(--txt);font-family:ui-monospace,Consolas,monospace;font-size:11px;word-break:break-all;line-height:1.4}
@@ -41,141 +45,237 @@ footer{margin-top:22px;color:var(--mut);font-size:13px}
 <body>
 <div class="wrap">
   <header>
-    <div class="crumb">FREE-20261101 · Adversary Implementation Diagram</div>
-    <h1>FREE-20261101-D001</h1>
-    
+    <div class="crumb">AIP-20261103 · 對抗行為架構圖</div>
+    <h1>AIP-20261103-D003</h1>
+    <div class="wm">SAMPLE · NOT FOR DELIVERY</div>
   </header>
   <section class="grid2">
-    <div class="box"><h3>Trace Hash</h3><code class="hash">1c78708e501c50a2b48a5ba5570280acb1be36865570d60a71982c6823779276</code></div>
-    <div class="box"><h3>Freshness Grade</h3><p>Unknown (no CVE anchor)</p></div>
+    <div class="box"><h3>場景配置哈希（sha256）</h3><code class="hash">5608e7e0d3508ae7d6725b3384081dea219e19683e4820fb2e9c537cffd9f427</code><p class="muted">由場景配置派生，用於唯一標識，非真實樣本哈希</p></div>
+    <div class="box"><h3>新鮮度分級</h3><p>A 級（&lt;30 天，最新）</p></div>
   </section>
   <section class="box">
-    <h3>Techniques</h3>
-    <table class="tech"><tr><th>ID</th><th>Technique</th><th>Sub-technique</th></tr><tr><td class="code">T1110</td><td>Brute Force</td>
-      <td class="sub">T1110.001</td></tr><tr><td class="code">T1547</td><td>Boot or Logon Autostart Execution</td>
-      <td class="sub">T1547.001</td></tr><tr><td class="code">T1053</td><td>Scheduled Task/Job</td>
-      <td class="sub">T1053.005</td></tr><tr><td class="code">T1562</td><td>Impair Defenses</td>
-      <td class="sub">T1562.001</td></tr><tr><td class="code">T1102</td><td>Web Service</td>
-      <td class="sub">T1102.001</td></tr></table>
+    <h3>涉及技術</h3>
+    <table class="tech"><tr><th>ID</th><th>技术</th><th>子技术</th></tr><tr><td class="code">T1203</td><td>T1203</td>
+      <td class="sub">T1203</td></tr><tr><td class="code">T1059</td><td>T1059</td>
+      <td class="sub">T1059.001</td></tr><tr><td class="code">T1053</td><td>排程任務/工作</td>
+      <td class="sub">T1053.005</td></tr><tr><td class="code">T1497</td><td>虛擬化/沙箱逃逸</td>
+      <td class="sub">T1497.001</td></tr><tr><td class="code">T1071</td><td>應用層協定</td>
+      <td class="sub">T1071.001</td></tr></table>
   </section>
   <section class="box">
-    <h3>Related CVE</h3><ul class="cve"><li>—</li></ul>
+    <h3>關聯 CVE</h3><ul class="cve"><li>CVE-2026-120347<span class="cve-meta"> · HIGH</span></li></ul>
   </section>
   <section class="box">
-    <h3>Behavior Chain (6 Stages)</h3><div class="flowchain">
+    <h3>行為鏈（5 階段）</h3><div class="flowchain cols-5">
       <div class="flow-node">
-        <div class="flow-title">① Initial Recon</div>
-        <div class="flow-prim">env.enumerate</div>
-        <div class="flow-events"><span>EventID 1（进程创建）</span><span>3（网络连接）</span></div>
+        <div class="flow-title">① 路過式漏洞利用</div>
+        <div class="flow-prim">driveby.exploit_kit</div>
+        <div class="flow-events"><span>事件 3（網路連線）</span><span>1（程序建立）</span></div>
       </div>
       <div class="flow-node">
-        <div class="flow-title">② Obfuscation &amp; Packing</div>
-        <div class="flow-prim">obfuscate.packed</div>
-        <div class="flow-events"><span>EventID 7（镜像加载）</span><span>11（文件创建）</span></div>
-      </div>
-      <div class="flow-node">
-        <div class="flow-title">③ Replication</div>
-        <div class="flow-prim">replicate.copy</div>
-        <div class="flow-events"><span>EventID 11（文件创建）</span><span>26（文件删除）</span></div>
-      </div>
-      <div class="flow-node">
-        <div class="flow-title">④ Payload Transform</div>
+        <div class="flow-title">② 承載執行</div>
         <div class="flow-prim">payload.transform</div>
-        <div class="flow-events"><span>EventID 1（进程创建）</span><span>10（进程访问）</span></div>
+        <div class="flow-events"><span>事件 1（程序建立）</span><span>10（程序存取）</span></div>
       </div>
       <div class="flow-node">
-        <div class="flow-title">⑤ Persistence</div>
-        <div class="flow-prim">persist.schedule</div>
-        <div class="flow-events"><span>EventID 4698（计划任务）</span><span>7045（服务创建）</span><span>13（注册表）</span></div>
+        <div class="flow-title">③ 排程任務持久化</div>
+        <div class="flow-prim">persist.schtasks</div>
+        <div class="flow-events"><span>事件 4698（排程任務）</span></div>
       </div>
       <div class="flow-node">
-        <div class="flow-title">⑥ Command &amp; Control</div>
-        <div class="flow-prim">c2.beacon</div>
-        <div class="flow-events"><span>EventID 3（网络连接）</span><span>22（DNS 查询）</span></div>
-      </div></div><div class="flowcap">Observable event IDs (Sysmon/Windows) shown under each stage</div>
+        <div class="flow-title">④ 沙箱逃逸</div>
+        <div class="flow-prim">evasion.sandbox</div>
+        <div class="flow-events"><span>事件 1（程序建立，反沙箱偵測）</span></div>
+      </div>
+      <div class="flow-node">
+        <div class="flow-title">⑤ HTTP 信標</div>
+        <div class="flow-prim">c2.http_beacon</div>
+        <div class="flow-events"><span>事件 3（網路連線）</span><span>22（DNS 查詢）</span></div>
+      </div></div><div class="flowcap">各階段下方為可觀測事件 ID（Sysmon/Windows）</div>
     <div class="stage">
-      <div class="stage-h">① Initial Recon
-        <span class="prim">env.enumerate</span></div>
-      <table class="args"><tr><td class="k">target</td><td class="v">rdp_3389</td></tr><tr><td class="k">scope</td><td class="v">network</td></tr><tr><td class="k">detail</td><td class="v">password guessing rdp</td></tr></table>
+      <div class="stage-h">① 路過式漏洞利用
+        <span class="prim">driveby.exploit_kit</span></div>
+      <table class="args"><tr><td class="k">service</td><td class="v">web</td></tr><tr><td class="k">target</td><td class="v">web</td></tr><tr><td class="k">detail</td><td class="v">cve 120347</td></tr><tr><td class="k">payload_type</td><td class="v">webshell_jsp</td></tr><tr><td class="k">tool</td><td class="v">sliver</td></tr></table>
     </div>
     <div class="stage">
-      <div class="stage-h">② Obfuscation &amp; Packing
-        <span class="prim">obfuscate.packed</span></div>
-      <table class="args"><tr><td class="k">format</td><td class="v">amsi_bypass</td></tr><tr><td class="k">layers</td><td class="v">1</td></tr><tr><td class="k">target</td><td class="v">amsi.dll</td></tr><tr><td class="k">masquerade</td><td class="v">none</td></tr></table>
-    </div>
-    <div class="stage">
-      <div class="stage-h">③ Replication
-        <span class="prim">replicate.copy</span></div>
-      <table class="args"><tr><td class="k">dest</td><td class="v">local_share</td></tr><tr><td class="k">spread</td><td class="v">lateral</td></tr><tr><td class="k">count</td><td class="v">3</td></tr></table>
-    </div>
-    <div class="stage">
-      <div class="stage-h">④ Payload Transform
+      <div class="stage-h">② 承載執行
         <span class="prim">payload.transform</span></div>
-      <table class="args"><tr><td class="k">technique</td><td class="v">amsi_bypass</td></tr><tr><td class="k">type</td><td class="v">amsi.dll</td></tr><tr><td class="k">memory_only</td><td class="v">false</td></tr><tr><td class="k">service</td><td class="v"></td></tr><tr><td class="k">cve</td><td class="v"></td></tr></table>
+      <table class="args"><tr><td class="k">cve</td><td class="v">CVE-2026-120347</td></tr><tr><td class="k">detail</td><td class="v">on-disk sandbox_artifact_check execution</td></tr><tr><td class="k">memory_only</td><td class="v">false</td></tr></table>
     </div>
     <div class="stage">
-      <div class="stage-h">⑤ Persistence
-        <span class="prim">persist.schedule</span></div>
-      <table class="args"><tr><td class="k">mechanism</td><td class="v">registry_run</td></tr><tr><td class="k">trigger</td><td class="v"></td></tr><tr><td class="k">hidden</td><td class="v">false</td></tr><tr><td class="k">task_name</td><td class="v">SystemTask</td></tr></table>
+      <div class="stage-h">③ 排程任務持久化
+        <span class="prim">persist.schtasks</span></div>
+      <table class="args"><tr><td class="k">mechanism</td><td class="v">scheduled_task</td></tr><tr><td class="k">trigger</td><td class="v">on_demand</td></tr><tr><td class="k">hidden</td><td class="v">false</td></tr><tr><td class="k">task_name</td><td class="v">SystemTask</td></tr><tr><td class="k">detail</td><td class="v">dll_side_loading</td></tr></table>
     </div>
     <div class="stage">
-      <div class="stage-h">⑥ Command &amp; Control
-        <span class="prim">c2.beacon</span></div>
-      <table class="args"><tr><td class="k">protocol</td><td class="v">https</td></tr><tr><td class="k">endpoints</td><td class="v">c2.github_c2.example</td></tr><tr><td class="k">domain_fronting</td><td class="v">false</td></tr><tr><td class="k">mode</td><td class="v">standard</td></tr></table>
+      <div class="stage-h">④ 沙箱逃逸
+        <span class="prim">evasion.sandbox</span></div>
+      <table class="args"><tr><td class="k">technique</td><td class="v">sandbox_artifact_check</td></tr><tr><td class="k">target</td><td class="v">user_activity</td></tr></table>
+    </div>
+    <div class="stage">
+      <div class="stage-h">⑤ HTTP 信標
+        <span class="prim">c2.http_beacon</span></div>
+      <table class="args"><tr><td class="k">protocol</td><td class="v">https</td></tr><tr><td class="k">endpoints</td><td class="v">c2.dga_time.example</td></tr><tr><td class="k">domain_fronting</td><td class="v">false</td></tr><tr><td class="k">mode</td><td class="v">dga</td></tr></table>
     </div>
   </section>
   <section class="box">
-    <h3>Reproducible Validation Scenarios</h3><ul class="sc"><li>baseline_execution <span class="ev">6 events</span></li><li>reboot_persistence <span class="ev">4 events</span></li><li>c2_reconnect <span class="ev">3 events</span></li></ul>
+    <h3>可復現驗證場景</h3><ul class="sc"><li>baseline_execution <span class="ev">6 事件數</span></li><li>reboot_persistence <span class="ev">3 事件數</span></li><li>privilege_escalation <span class="ev">3 事件數</span></li><li>c2_reconnect <span class="ev">311 事件數</span></li></ul>
   </section>
   <section class="box">
-    <h3>Actionable Detections</h3><div class="det"><span class="verdict ok">ACTIONABLE</span>
-      <pre class="rule">title: RDP Brute Force
-description: Detects RDP Brute Force behavior
+    <h3>可落地偵測點</h3><div class="det"><span class="verdict ok">可落地</span>
+      <pre class="rule">title: Potentially Suspicious Child Process of KeyScrambler.exe
+logsource:
+    product: windows
+    category: process_creation
+detection:
+  selection_parent:
+      ParentImage|endswith: '\KeyScrambler.exe'
+  selection_binaries:
+      # Note: add additional binaries that the attacker might use
+      - Image|endswith:
+            - '\cmd.exe'
+            - '\cscript.exe'
+            - '\mshta.exe'
+            - '\powershell.exe'
+            - '\pwsh.exe'
+            - '\regsvr32.exe'
+            - '\rundll32.exe'
+            - '\wscript.exe'
+      - OriginalFileName:
+            - 'Cmd.Exe'
+            - 'cscript.exe'
+            - 'mshta.exe'
+            - 'PowerShell.EXE'
+            - 'pwsh.dll'
+            - 'regsvr32.exe'
+            - 'RUNDLL32.EXE'
+            - 'wscript.exe'
+  condition: all of selection_*
+status: test
+author: Swachchhanda Shrawan Poudel
+date: 2024-05-13
+references:
+    - https://twitter.com/DTCERT/status/1712785421845790799
+falsepositives:
+    - Unknown
+level: medium</pre></div><div class="det"><span class="verdict ok">可落地</span>
+      <pre class="rule">title: Suspicious PowerShell Download - PoshModule
+logsource:
+    product: windows
+    category: ps_module
+detection:
+  selection_webclient_:
+      ContextInfo|contains: 'System.Net.WebClient'
+  selection_function:
+      ContextInfo|contains:
+          - '.DownloadFile('
+          - '.DownloadString('
+  condition: all of selection_*
+status: test
+author: Florian Roth (Nextron Systems)
+date: 2017-03-05
+references:
+    - https://learn.microsoft.com/en-us/dotnet/api/system.net.webclient.downloadfile?view=net-8.0
+    - https://learn.microsoft.com/en-us/dotnet/api/system.net.webclient.downloadstring?view=net-8.0
+falsepositives:
+    - PowerShell scripts that download content from the Internet
+level: medium</pre></div><div class="det"><span class="verdict ok">可落地</span>
+      <pre class="rule">title: Suspicious Scheduled Task Creation
+logsource:
+    product: windows
+    service: security
+detection:
+  selection_eid:
+      EventID: 4698
+  selection_paths:
+      TaskContent|contains:
+          - '\AppData\Local\Temp\'
+          - '\AppData\Roaming\'
+          - '\Users\Public\'
+          - '\WINDOWS\Temp\'
+          - 'C:\Temp\'
+          - '\Desktop\'
+          - '\Downloads\'
+          - '\Temporary Internet'
+          - 'C:\ProgramData\'
+          - 'C:\Perflogs\'
+  selection_commands:
+      TaskContent|contains:
+          - 'regsvr32'
+          - 'rundll32'
+          - 'cmd.exe&lt;/Command&gt;'
+          - 'cmd&lt;/Command&gt;'
+          - '&lt;Arguments&gt;/c '
+          - '&lt;Arguments&gt;/k '
+          - '&lt;Arguments&gt;/r '
+          - 'powershell'
+          - 'pwsh'
+          - 'mshta'
+          - 'wscript'
+          - 'cscript'
+          - 'certutil'
+          - 'bitsadmin'
+          - 'bash.exe'
+          - 'bash '
+          - 'scrcons'
+          - 'wmic '
+          - 'wmic.exe'
+          - 'forfiles'
+          - 'scriptrunner'
+          - 'hh.exe'
+  condition: all of selection_*
+status: test
+author: Nasreddine Bencherchali (Nextron Systems)
+date: 2022-12-05
+references:
+    - https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/auditing/event-4698
+falsepositives:
+    - Unknown
+level: high</pre></div><div class="det"><span class="verdict ok">可落地</span>
+      <pre class="rule">title: Sandbox / Virtualization Environment Detection
 status: experimental
 logsource:
-  product: windows
-  category: authentication
+    product: windows
+    category: process_creation
 detection:
-  selection: {EventID: 4625}
-  condition: selection | count() &gt; 20</pre></div><div class="det"><span class="verdict heu">HEURISTIC</span>
-      <pre class="rule">title: HKLM Run Key
-description: Detects HKLM Run Key behavior
-status: experimental
+  selection_artifacts:
+    CommandLine|contains:
+      - 'VMware'
+      - 'VBoxService'
+      - 'vbox'
+      - 'qemu-ga'
+  selection_mac:
+    CommandLine|contains:
+      - 'sysctl hw.model'
+      - 'ioreg -l'
+  condition: selection_artifacts or selection_mac
+level: medium
+falsepositives:
+  - legitimate virtualization management tools</pre></div><div class="det"><span class="verdict ok">可落地</span>
+      <pre class="rule">title: Change User Agents with WebRequest
 logsource:
-  product: windows
-  category: registry_event
+    product: windows
+    category: ps_script
 detection:
-  registry: {key|contains: CurrentVersion\Run}
-  condition: registry</pre></div><div class="det"><span class="verdict heu">HEURISTIC</span>
-      <pre class="rule">title: Dormant Idle Wait
-description: Detects Dormant Idle Wait behavior
-status: experimental
-logsource:
-  product: windows
-  category: process_creation
-detection:
-  selection: {EventID: 4698, Trigger: idle}
-  condition: selection</pre></div><div class="det"><span class="verdict heu">HEURISTIC</span>
-      <pre class="rule">title: AMSI Bypass
-description: Detects AMSI Bypass behavior
-status: experimental
-logsource:
-  product: windows
-  category: process_creation
-detection:
-  selection: {ScriptBlockText|contains: AmsiScanBuffer}
-  condition: selection</pre></div><div class="det"><span class="verdict heu">HEURISTIC</span>
-      <pre class="rule">title: GitHub C2
-description: Detects GitHub C2 behavior
-status: experimental
-logsource:
-  product: windows
-  category: network_connection
-detection:
-  selection: {Url|contains: raw.githubusercontent}
-  condition: selection</pre></div>
+  selection_webrequest:
+      ScriptBlockText|contains:
+          - 'Invoke-WebRequest'
+          - 'Invoke-RestMethod'
+          - ' irm ' # Space before and after to avoid false positives with 'irm' as a variable
+          - 'iwr '
+  selection_useragent:
+      ScriptBlockText|contains: '-UserAgent '
+  condition: all of selection_*
+status: test
+author: frack113
+date: 2022-01-23
+references:
+    - https://github.com/redcanaryco/atomic-red-team/blob/f339e7da7d05f6057fdfcdd3742bfcf365fee2a9/atomics/T1071.001/T1071.001.md#t1071001---web-protocols
+falsepositives:
+    - Unknown
+level: medium</pre></div>
   </section>
-  <footer><p>This validation set is for defensive detection, security testing, and compliance validation only.</p>
+  <footer><p>本驗證集僅用於防禦檢測、安全測試與合規驗證。</p>
     </footer>
 </div>
 
