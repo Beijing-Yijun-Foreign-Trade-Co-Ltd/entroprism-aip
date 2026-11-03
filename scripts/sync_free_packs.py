@@ -2,8 +2,9 @@
 """
 Sync Entroprism AIP free packs from entroprism.net (public TAXII 2.1 endpoint).
 
-Fetches the public collections list, filters FREE- packs, and downloads any
-pack whose bundle is not already in the repository's bundles/ directory.
+Fetches the public collections list, filters FREE- packs, and keeps the 3 most
+recent packs (600 diagrams) in the repository's bundles/ directory — older packs
+are removed so the public repository always reflects the latest 3 free packs.
 Rebuilds a STIX 2.1 bundle wrapper around the objects returned by TAXII.
 """
 import json
@@ -13,6 +14,7 @@ import urllib.request
 
 BASE = "https://entroprism.net/api/website/taxii2"
 BUNDLES_DIR = os.path.join(os.path.dirname(__file__), "..", "bundles")
+KEEP = 3  # 公开 3 个最新免费包 = 600 张图
 
 
 def get_json(url, timeout=30):
@@ -31,13 +33,14 @@ def main():
 
     collections = get_json(f"{BASE}/root/collections")
     ids = [c["id"] for c in collections.get("collections", []) if c.get("id", "").startswith("FREE-")]
+    # 只保留最新的 KEEP 个（lot_id 后缀是时间戳，倒序即最新在前）
+    ids = sorted(ids, reverse=True)[:KEEP]
 
     added = []
     for cid in ids:
         out_path = os.path.join(BUNDLES_DIR, f"{cid}.json")
         if os.path.exists(out_path):
             continue
-        # 分页拉取 objects（当前免费包单包 <= 226 个对象，一页足够）
         resp = get_json(f"{BASE}/root/collections/{cid}/objects")
         objects = resp.get("objects", [])
         if not objects:
@@ -55,11 +58,23 @@ def main():
         added.append(cid)
         print(f"  added {cid} ({len(objects)} objects)")
 
-    print(f"Synced {len(added)} new packs (total FREE packs online: {len(ids)})")
-    # 输出供后续步骤判断是否有变更
-    if added:
+    # 删除不在最新 KEEP 个里的旧 bundle
+    keep_set = set(ids)
+    removed = []
+    for fn in os.listdir(BUNDLES_DIR):
+        if not fn.endswith(".json"):
+            continue
+        cid = fn[:-5]
+        if cid not in keep_set:
+            os.remove(os.path.join(BUNDLES_DIR, fn))
+            removed.append(cid)
+    if removed:
+        print(f"  removed old packs: {', '.join(removed)}")
+
+    print(f"Synced {len(added)} new packs (kept {len(ids)} latest FREE packs)")
+    if added or removed:
         with open(os.environ.get("GITHUB_OUTPUT", "/dev/null"), "a") as f:
-            f.write(f"changed=true\n")
+            f.write("changed=true\n")
             f.write(f"added_count={len(added)}\n")
 
 
